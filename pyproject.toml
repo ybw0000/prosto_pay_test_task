@@ -1,0 +1,61 @@
+[tool.poetry]
+name = "core"
+version = "0.1.0"
+description = ""
+authors = ["Stanislav Buldyhin <faquedust@gmail.com>"]
+readme = "README.md"
+license = "Apache 2.0"
+
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.110.1"
+pydantic = "^2.7.0"
+SQLAlchemy = { extras = ["asyncio"], version = "^2.0.29" }
+gunicorn = "^21.2.0"
+uvloop = "^0.19.0"
+orjson = "^3.10.0"
+python-json-logger = "^2.0.7"
+uvicorn = "^0.29.0"
+pydantic-settings = "^2.2.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+pytest-httpx = "^0.30.0"
+pytest-asyncio = "^0.23.6"
+mypy = "^1.9.0"
+black = "^24.4.0"
+coverage = "^7.4.4"
+isort = "^5.13.2"
+flake8 = "^7.0.0"
+flake8-isort = "^6.1.1"
+radon = "^6.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.black]
+target-version = ['py312']
+line-length = 120
+exclude = '''
+(
+    \.venv
+    | .+/migrations
+)
+'''
+
+[tool.coverage.report]
+exclude_also = ["CHANNEL_LAYERS"]
+omit = ["manage.py", "core/testrunner.py", "core/settings.py"]
+
+
+[tool.isort]
+profile = "black"
+force_single_line = true
+order_by_type = false
+line_length = 120
+skip = '.venv,migrations'
