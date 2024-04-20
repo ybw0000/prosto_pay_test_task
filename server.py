@@ -10,10 +10,9 @@ app = create_app()
 
 if __name__ == "__main__":
     uvicorn.run(
-        "server:app",
+        app,
         host="0.0.0.0",
         port=settings.PORT,
-        reload=settings.DEBUG,
         log_level=settings.LOG_LEVEL.value.lower(),
         log_config=LOG_CONFIG,
         loop="uvloop",

@@ -17,7 +17,8 @@ WORKDIR /app
 
 COPY pyproject.toml poetry.lock ./
 
-RUN poetry install --only main --no-ansi --no-root && rm -rf $POETRY_CACHE_DIR
+RUN poetry install --no-ansi --no-root;
+
 
 FROM python:${PYTHON_VERSION}-bullseye as runner
 
@@ -29,10 +30,17 @@ COPY core ./app/core
 COPY server.py ./app/server.py
 COPY gunicorn.conf.py ./app/gunicorn.conf.py
 COPY entrypoint.sh ./app/entrypoint.sh
+COPY alembic.ini ./app/alembic.ini
+COPY alembic ./app/alembic
+COPY pytest.ini ./app/pytest.ini
+COPY migrate-db.sh ./app/migrate-db.sh
+COPY downgrade-db.sh ./app/downgrade-db.sh
 
 WORKDIR /app
 
 RUN chmod +x entrypoint.sh
+RUN chmod +x migrate-db.sh
+RUN chmod +x downgrade-db.sh
 
 EXPOSE 8000
 

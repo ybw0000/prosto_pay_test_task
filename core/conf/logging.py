@@ -1,5 +1,3 @@
-from copy import deepcopy
-
 from pythonjsonlogger import jsonlogger
 
 from core.conf.settings import Env
@@ -12,9 +10,6 @@ class BaseJsonFormatter(jsonlogger.JsonFormatter):
         super(BaseJsonFormatter, self).add_fields(log_record, record, message_dict)
         log_record["level"] = record.levelname
         log_record["logger"] = record.name
-        if isinstance(record.msg, dict):
-            log_record["json"] = deepcopy(record.msg.get("json"))
-            log_record["text"] = deepcopy(record.msg.get("text"))
 
 
 log_level = settings.LOG_LEVEL.value
@@ -46,7 +41,6 @@ LOG_CONFIG = {
         },
     },
     "loggers": {
-        "dramatiq": {"handlers": ["default"], "level": log_level},
         "uvicorn": {"handlers": [], "level": log_level},
         "gunicorn": {"handlers": ["gunicorn_uvicorn"], "level": log_level},
         "gunicorn.access": {"handlers": ["gunicorn_uvicorn"], "level": log_level},
