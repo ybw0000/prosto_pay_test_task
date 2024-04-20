@@ -21,9 +21,36 @@ class LogLevel(str, Enum):
 class Settings(BaseSettings):
     PREFIX: str = "/api/v1"
     PORT: int = 8000
-    DEBUG: bool = True
+    DEBUG: bool = False
     ENV: Env = Env.LOCAL
     LOG_LEVEL: LogLevel = LogLevel.INFO
+    DB_DRIVER: str = "postgresql+asyncpg"
+    DATABASE_ADMIN_USER: str
+    DATABASE_ADMIN_PASSWORD: str
+    DATABASE_NAME: str
+    DATABASE_USER: str
+    DATABASE_PASSWORD: str
+    DATABASE_HOST: str
+
+    @property
+    def sqlalchemy_database_uri(self) -> str:
+        return (
+            f"{self.DB_DRIVER}://"
+            f"{self.DATABASE_USER}:"
+            f"{self.DATABASE_PASSWORD}@"
+            f"{self.DATABASE_HOST}/"
+            f"{self.DATABASE_NAME}"
+        )
+
+    @property
+    def sync_sqlalchemy_database_uri(self) -> str:
+        return (
+            f"postgresql://"
+            f"{self.DATABASE_USER}:"
+            f"{self.DATABASE_PASSWORD}@"
+            f"{self.DATABASE_HOST}/"
+            f"{self.DATABASE_NAME}"
+        )
 
 
-settings = Settings()
+settings = Settings()  # type: ignore
